@@ -1,0 +1,53 @@
+public class nomCLase {
+
+//creo atributos ej. String color;
+
+public static void main (String [] args){ 
+nomClase nomObjeto = new nomClase(); // nomObjeto() se llama cosntructores
+cargo atributos
+ej. nomObjeto.color = "blanco";
+para imprimir hago:
+System.out.println ("el color es: "+ nomObjeto.color);
+
+
+si dos var tienen los mismos strigns java asigna la misma pos de memoria ej:
+String test1 ="hola";
+String test ="hola";
+si los comparo me da true
+
+pero si hago
+String test1 = "hola"; // o String test1 = new String ("hola");
+String test2 = new String ("hola");
+boolean iguales = test1 == test2; da false pq son dos pos de memoria distintas
+PERO si hago boolean valoresIguales= test2.equals(test1) //esto da true pq evzlua el contenido no las dir de memoria
+
+
+test1.toUpperCase() no altera test1 solo crea una copia y lo pasa a mayus
+
+
+
+
+public class NombreDeCLase{//nombre de la clase coincide con el nom del archivo
+/*Declaración del estado del objeto*/
+/*Declaración de constructor(es)*/
+/*Declaración de métodos que implementan acciones*/
+
+las variables pueden ser public o private
+USAR LAS VARIABLES DE INSTANCIA EN PRIVATE. Para asignarle un valor uso un setter.
+Declaración de estado:
+-ej. double precio=100;
+
+Declaración comportamiento
+public TipoRetorno nombreMetodo(listaParametrosFormales{
+/*Declaracon de varlocales al método
+Cuerpo del metodo*/
+
+public:el método es parte de la interfaz;
+TipoRetorno: tipoDeDato/nombreClase/void
+(void no retorna nada ej. los setters)
+ListaParametros: datos primitivos u objetos. se pasa solo por valor.
+
+return:
+ej
+private boolean esCaro(double valor){ return:(precio> valor);}
+retorna true o false

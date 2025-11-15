@@ -1,0 +1,87 @@
+var= 
+tipo nombreVariable;
+convención de nombres : 1era palabra con minúscula, el resto con mayuscula
+asignación 
+nombreVariable = valor;
+
+tipos de datos primitivos:
+boolean
+char
+int
+double  (real)
+
+String (no es primitivo)
+
+operadores:
++
+-
+*
+/
+% (mod)
+++ (incrementa 1)
+-- (decrementa 1)
+== (igual)
+!= (distinto)
+<
+>
+>=
+<=
+&& (and)
+|| (or)
+! (not)
++ (concatenar strings, ej nom + = 'apellido'; (toma lo que había antes en nom y le suma apellido)
+
+System.out.print 
+System.out.println
+
+randomize ; = GeneradorAleatorio.iniciar ();
+
+
+
+en las estructuras de control si son varias  acciones el begin y end es = a {}, si es 1 sola accion uso ;
+case = switch (se usa poco)
+
+while (cond) el DO no se usa !!!
+repeat until = do {acciones} while (condicion)
+EL FOR CAMBIA:
+FOR (inicializacion; cond; expresion)
+{acciones}
+ej int i;
+ for (i=1;i<=10; i++)
+   System.out.println (i);
+ES LO MISMO QUE:
+for (int i=1; i<=10; System.out.println(i++);
+la var i solo existe en el for pq es LOCAL al modulo
+DE MENOR A MAYOR:
+for (i=10; i>0;i-1 )
+
+objetos: guardan datos del mismo tipo
+arreglos:
+-DF se establece al crearlo
+-acceso directo a las pos
+-índice entero, empiezan en 0
+
+tipoDeDato[] nombreVar
+ej: String[] alumnos; //la var alumnos va a tener una arreglo de strings
+nombreVar= new tipoElem [dimF]; si df=8 va de 0-7
+para acceder: nombreVar [pos]
+
+ej. int[] contador=new int[10];
+   for (i=0;i<10;i++)
+ contador [i]=i;
+
+…
+System.out.println {'en la pos'+i+'hay'+contador[i]};
+
+ARREGLOS BIDIMENSIONALES: matrices
+2indices: el 1ero es la fila (horizontal) y el 2do la columna (vertical) comienzan desde 0
+
+TipoElem [][] nombreVar; //declaración
+nomVar=new TipoElem [DIMF][DIMC];// creación
+nomVar[posFila][posColumna];
+ej. int [][] tabla= new int[3][4];
+int i,j;
+for (i=0;i<3;j++)
+  tabla [i][j] = GeneradorAleatorio.generarInt (10);
+System.out.println ("la pos. 1,2 tiene"+tabla [1][2]);
+
