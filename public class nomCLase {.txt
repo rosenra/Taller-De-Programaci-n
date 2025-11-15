@@ -1,0 +1,26 @@
+public class nomCLase {
+
+//creo atributos ej. String color;
+
+public static void main (String [] args){ 
+nomClase nomObjeto = new nomClase(); // nomObjeto() se llama cosntructores
+cargo atributos
+ej. nomObjeto.color = "blanco";
+para imprimir hago:
+System.out.println ("el color es: "+ nomObjeto.color);
+
+
+si dos var tienen los mismos strigns java asigna la misma pos de memoria ej:
+String test1 ="hola";
+String test ="hola";
+si los comparo me da true
+
+pero si hago
+String test1 = "hola"; // o String test1 = new String ("hola");
+String test2 = new String ("hola");
+boolean iguales = test1 == test2; da false pq son dos pos de memoria distintas
+PERO si hago boolean valoresIguales= test2.equals(test1) //esto da true pq evzlua el contenido no las dir de memoria
+
+
+test1.toUpperCase() no altera test1 solo crea una copia y lo pasa a mayus
+
