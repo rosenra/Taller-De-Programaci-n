@@ -1,0 +1,91 @@
+{tres robots deben realizar 3 cuadrados , juntando todas las flores que encuentran a su paso.Se debe seguir el modelo cliente/servidor. Cada uno de los 3 robots (cliente) debe solicitar a un robot servidor un tamaño de cuadrado y luego realizar el cuadrado de dicho tamaño. El servidor determina el tamaño entre 1 y 5. Cada robot, una vez completados los 3 cuadrados. deben depositar de a una todas las flores juntadas en la esquina (50,50). Cuando los 3 hallan depositado todas sus flores, el robot debe ir a la esq (50,50) y juntar todas las flores que haya en dicha esquina e informar la cantidad juntada}
+programa turnoK
+procesos
+  proceso juntarF(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso cuadrado (E cant:numero;ES flores:numero){cant de entrada??}
+  comenzar
+    repetir 4
+      repetir cant
+        juntarF (flores)
+        mover
+      derecha
+  fin
+areas
+  area1: AreaP(1,1,6,18)
+  area2: AreaP(8,1,13,18)
+  area3: AreaP(15,1,20,18)
+  areaS: AreaP(22,1,22,1)
+  cincuenta: AreaC(50,50,50,50)
+robots
+  robot cliente
+  variables
+    cant,id:numero
+    flores:numero
+    ca,av:numero
+  comenzar
+    RecibirMensaje(id,rS){es necesario???}
+    repetir 3
+      EnviarMensaje(id,rS)
+      RecibirMensaje(cant,rS)
+      flores:=0
+      cuadrado (cant,flores)
+      Pos(PosAv,PosCa+cant+1)
+    av:=PosAv
+    ca:=PosCa
+    repetir flores
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(50,50)
+    EnviarMensaje(V,rS)
+  fin
+  robot servidor
+  variables
+    ok:boolean
+    cant:numero
+    flores:numero
+    id:numero
+  comenzar
+    flores:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    repetir 9
+      Random(cant,1,5)
+      RecibirMensaje(id,*)
+      si (id=1)
+        EnviarMensaje(cant,r1)
+      sino
+        si(id=2)
+          EnviarMensaje(cant,r2)
+        sino
+          EnviarMensaje(cant,r3)
+    repetir 3
+      RecibirMensaje(ok,*)
+    Pos(50,50)
+    juntarF(flores)
+    Informar(flores)
+  fin
+variables
+  r1,r2,r3: cliente
+  rS:servidor
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(rS,areaS)
+  AsignarArea(r1,cincuenta)
+  AsignarArea(r2,cincuenta)
+  AsignarArea(r3,cincuenta)
+  AsignarArea(rS,cincuenta)
+  Iniciar(r1,1,1)
+  Iniciar(r2,8,1)
+  Iniciar(r3,15,1)
+  Iniciar(rS,22,1)
+fin

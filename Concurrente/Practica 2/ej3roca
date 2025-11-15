@@ -1,0 +1,89 @@
+programa ej3_p2
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar 
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso recorrerF(ES flores:numero)
+  comenzar
+    repetir 9
+      si(HayFlorEnLaEsquina)
+        juntarFlores(flores)
+      mover
+    si(HayFlorEnLaEsquina)
+      juntarFlores(flores)
+  fin
+  proceso recorrerP(ES papeles:numero)
+  comenzar
+    repetir 9
+      si(HayPapelEnLaEsquina)
+        juntarPapeles(papeles)
+      mover
+    si(HayPapelEnLaEsquina)
+      juntarPapeles(papeles)
+  fin
+areas
+  area1: AreaP(1,1,10,1)
+  area2: AreaP(11,1,20,1)
+  area3: AreaP(1,5,10,5)
+  area4: AreaP(11,5,20,5)
+robots
+  robot RA1
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    derecha
+    recorrerP(papeles)
+    EnviarMensaje(papeles,a2)
+  fin
+  robot RA2
+  variables
+    p1:numero
+  comenzar
+    RecibirMensaje(p1,a1)
+    derecha
+    recorrerP(p1)
+    Informar('papeles juntados',p1)
+  fin
+  robot RB1
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    derecha
+    recorrerF(flores)
+    EnviarMensaje(flores,b2)
+  fin
+  robot RB2
+  variables
+    f1:numero
+  comenzar
+    RecibirMensaje(f1,b1)
+    derecha
+    recorrerF(f1)
+    Informar('flores juntadas',f1)
+  fin
+variables
+  a1:RA1
+  a2:RA2
+  b1:RB1
+  b2:RB2
+comenzar
+  AsignarArea(a1,area1)
+  AsignarArea(a2,area2)
+  AsignarArea(b1,area3)
+  AsignarArea(b2,area4)
+  Iniciar(a1,1,1)
+  Iniciar(a2,11,1)
+  Iniciar(b1,1,5)
+  Iniciar(b2,11,5)
+fin

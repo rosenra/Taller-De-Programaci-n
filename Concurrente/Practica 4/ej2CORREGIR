@@ -1,0 +1,98 @@
+{no se puede ejecutar depositarPapel debido a que no hay ningun papel en la bolsa}
+programa ej2p4
+procesos
+  proceso esquina(E av:numero;E ca:numero)
+  variables
+    ok:boolean
+  comenzar
+    ok:=V
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras (HayPapelEnLaBolsa)
+      depositarPapel
+    Pos(av,ca)
+    LiberarEsquina(50,50)
+  fin
+  proceso tomarPapeles
+  variables
+    papeles:numero
+    av:numero
+  comenzar
+    papeles:=0
+    av:=PosAv
+    mientras(PosCa<100)
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        papeles:= papeles+1
+        si (papeles=5)
+          esquina(PosAv,PosCa)
+          papeles:=0
+      mover
+  fin
+  proceso intento (E cant:numero; ES ok:boolean)
+  variables
+    papeles:numero
+    av:numero
+  comenzar
+    av:=PosAv
+    papeles:=0
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras((HayPapelEnLaEsquina)&(papeles<cant))
+      tomarPapel
+      papeles:=papeles+1
+    si (papeles=cant)
+      ok:=V
+    sino
+      repetir papeles
+        depositarPapel
+    Pos(av,1)
+    LiberarEsquina(50,50)
+  fin    
+areas
+  area1: AreaP(11,1,11,1)
+  area2: AreaP(12,1,12,1)
+  areaC: AreaC(50,50,50,50)
+  areaP1: AreaP(5,1,5,100)
+  areaP2: AreaP(10,1,10,100)
+robots
+  robot consu
+  variables
+    ok:boolean
+    int:numero 
+    cant:numero
+  comenzar
+    ok:=F
+    int:=0
+    Random(cant,1,5)
+    mientras (int<8)
+      intento(cant,ok)
+      si (ok)
+        repetir cant
+          depositarPapel
+      sino
+        int:=int+1
+    si (int=8)
+      Informar('excede',int)
+  fin
+  robot product
+  comenzar
+    tomarPapeles
+  fin
+variables
+  r1,r2:consu
+  rP1,rP2:product
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(rP1,areaP1)
+  AsignarArea(rP2,areaP2)
+  AsignarArea(r1,areaC)
+  AsignarArea(r2,areaC)
+  AsignarArea(rP1,areaC)
+  AsignarArea(rP2,areaC)
+  Iniciar (r1,11,1)
+  Iniciar(r2,12,1)
+  Iniciar(rP1,5,1)
+  Iniciar(rP2,10,1)
+fin

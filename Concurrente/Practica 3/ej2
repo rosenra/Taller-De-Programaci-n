@@ -1,0 +1,178 @@
+programa ej2p3
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso juntarPapeles (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso izquierda 
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso escalonesF (ES flores:numero)
+  variables
+    cant:numero
+  comenzar
+    cant:=5
+    juntarFlores(flores)
+    repetir 4
+      repetir cant
+        mover
+      juntarFlores(flores)
+      derecha
+      repetir cant
+        mover
+      juntarFlores(flores)
+      izquierda 
+      cant:=cant-1
+  fin
+  proceso escalonesF2 (ES flores:numero)
+  variables
+    cant:numero
+  comenzar
+    cant:=2
+    repetir 4
+      repetir cant
+        mover
+      juntarFlores(flores)
+      derecha
+      repetir cant
+        mover
+      juntarFlores(flores)
+      izquierda 
+      cant:=cant+1
+  fin
+  proceso escalonF (ES flores:numero)
+  comenzar
+    mover
+    juntarFlores (flores)
+    derecha
+    BloquearEsquina (16,16)
+    mover
+    EnviarMensaje (1,rJ)
+    juntarFlores(flores)
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+  fin
+  proceso recorrerF 
+  variables
+    f:numero
+  comenzar
+    f:=0
+    escalonesF(f)
+    escalonF(f)
+    escalonesF2(f)
+    Informar('flores juntadas',f)
+    EnviarMensaje(V,rJ)
+  fin
+  proceso escalonesP (ES papeles:numero)
+  variables
+    cant:numero
+  comenzar
+    cant:=5
+    juntarPapeles(papeles)
+    repetir 4
+      repetir cant
+        mover
+      juntarPapeles(papeles)
+      izquierda
+      repetir cant
+        mover
+      juntarPapeles(papeles)
+      derecha 
+      cant:=cant-1
+  fin
+  proceso escalonesP2 (ES papeles:numero)
+  variables
+    cant:numero
+  comenzar
+    cant:=2
+    repetir 4
+      repetir cant
+        mover
+      juntarPapeles(papeles)
+      izquierda
+      repetir cant
+        mover
+      juntarPapeles(papeles)
+      derecha 
+      cant:=cant+1
+  fin
+  proceso escalonP (ES papeles:numero)
+  comenzar
+    mover
+    juntarPapeles(papeles)
+    izquierda
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(2,rJ)
+    juntarPapeles(papeles)
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+  fin
+  proceso recorrerP
+  variables
+    p:numero
+  comenzar
+    p:=0
+    escalonesP(p)
+    escalonP(p)
+    escalonesP2(p)
+    Informar('papeles juntados',p)
+    EnviarMensaje(V,rJ)
+  fin
+areas
+  areaF: AreaP (1,1,14,30)
+  areaF2: AreaP(15,15,15,16){15 no es el medio,el edio es 16!!!}
+  areaP: AreaP(17,1,31,30)
+  medio: AreaPC(16,16,16,16)
+  areaJ: AreaP(15,1,15,1)
+robots
+  robot tipo1
+  comenzar
+    recorrerF
+  fin
+  robot tipo2
+  comenzar
+    recorrerP
+  fin
+  robot jefe
+  variables
+    termino:boolean
+    gano:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,*)
+    gano:=id
+    RecibirMensaje(id,*)
+    repetir 2
+      RecibirMensaje(termino,*)
+    Informar('ganador ',gano)
+  fin
+variables
+  rF:tipo1
+  rP:tipo2
+  rJ:jefe
+comenzar
+  AsignarArea(rF,areaF)
+  AsignarArea(rF,areaF2)
+  AsignarArea(rP,areaP)
+  AsignarArea(rF,medio)
+  AsignarArea(rP,medio)
+  AsignarArea(rJ,areaJ)
+  Iniciar(rF,1,1)
+  Iniciar(rP,31,1)
+  Iniciar(rJ,15,1)
+fin

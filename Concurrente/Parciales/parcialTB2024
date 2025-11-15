@@ -1,0 +1,103 @@
+{Dos robots F1 y F2 deben dar 60 pasos juntando todas las flores. F1 debe avanzar por la avenida 6 comenzando en la esquina (6,1) y F2 por una calle x indcaa por un fiscalizador (que genera una calle aleatoria entre 2 y 50) comenzando en la esquina (1,x). Al finalizar los recorridos de los floreros el fiscalizador debe indicar que robot llego primero a la esquina de cruce y cuantas flores junto dicho robot en todo su recorrido. f1 inicia en la esquina (6,1), f2 en (1,2) y el fiscalizador (100,100)}
+programa turnoB
+procesos
+  proceso juntarF(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+areas
+  area1: AreaP(6,1,6,1)
+  area1B: AreaP(6,51,6,60)
+  area2: AreaP(1,2,5,50)
+  area2B: AreaP(7,2,60,50)
+  compartida: AreaPC(6,2,6,50)
+  areaF: AreaP(100,100,100,100)
+robots
+  robot florero
+  variables
+    id:numero
+    flores:numero
+    x:numero
+    av,ca:numero
+  comenzar
+    flores:=0
+    x:=0
+    RecibirMensaje(id,rF)
+    si(id=1)
+      juntarF(flores)
+      repetir 24
+        av:=PosAv+1
+        ca:=PosCa+1
+        BloquearEsquina(av,ca)
+        mover
+        juntarF(flores)
+        mover
+        LiberarEsquina(av,ca)
+        juntarF(flores)
+      repetir 11
+        mover
+        juntarF(flores)
+    sino
+      RecibirMensaje(x,rF)
+      Pos(1,x)
+      derecha
+      repetir 4
+        juntarF(flores)
+        mover
+      juntarF(flores)
+      BloquearEsquina(6,x)
+      mover
+      juntarF(flores)
+      mover
+      LiberarEsquina(6,x)
+      repetir 53
+        juntarF(flores)
+        mover
+      juntarF(flores)
+    EnviarMensaje(id,rF)
+    EnviarMensaje(flores,rF)
+  fin
+  robot fiscalizador
+  variables
+    id:numero
+    ganador:numero
+    f,fMax:numero
+    x:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    Random(x,2,50)
+    EnviarMensaje(x,r2)
+    RecibirMensaje(id,*)
+    si(id=1)
+      ganador:=1
+      RecibirMensaje(f,r1)
+      fMax:=f
+      RecibirMensaje(id,r2)
+      RecibirMensaje(f,r2)
+    sino
+      ganador:=2
+      RecibirMensaje(f,r2)
+      fMax:=f
+      RecibirMensaje(id,r1)
+      RecibirMensaje(f,r1)
+    Informar ('ganador',ganador)
+    Informar('flores juntadas',fMax)
+  fin
+variables
+  r1,r2:florero
+  rF:fiscalizador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r1,area1B)
+  AsignarArea(r2,area2B)
+  AsignarArea(r1,compartida)
+  AsignarArea(r2,compartida)
+  AsignarArea(rF,areaF)
+  Iniciar(r1,6,1)
+  Iniciar(r2,1,2)
+  Iniciar(rF,100,100)
+fin

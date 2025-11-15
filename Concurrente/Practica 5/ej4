@@ -1,0 +1,99 @@
+programa ej4p5
+procesos
+  proceso juntarF (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso finalizar
+  comenzar
+    EnviarMensaje(F,r1)
+    EnviarMensaje(F,r2)
+    EnviarMensaje(F,r3)
+  fin
+areas
+  area1: AreaP(1,1,1,1)
+  area2: AreaP(2,1,2,1)
+  area3: AreaP(3,1,3,1)
+  cuadrante: AreaPC(40,40,60,60)
+  diez: AreaPC(10,10,10,10)
+  areaF: AreaP(4,1,4,1)
+robots
+  robot florero
+  variables
+    ca,av:numero
+    f:numero
+    x,y:numero
+    ok:boolean
+  comenzar
+    f:=0
+    x:=PosAv
+    y:=PosCa
+    RecibirMensaje (ok,rF)
+    mientras(ok)
+      RecibirMensaje(av,rF)
+      RecibirMensaje(ca,rF)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarF(f)
+      Pos(x,y)
+      LiberarEsquina(av,ca)
+      RecibirMensaje(ok,rF)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir f
+      depositarFlor
+    Pos(x,y)
+    LiberarEsquina(10,10)
+    EnviarMensaje(f,rF)
+  fin
+  robot fiscalizador
+  variables
+    x,y:numero
+    f,fTotal:numero
+    id:numero
+  comenzar
+    fTotal:=0
+    repetir 8
+      Random(id,1,3)
+      Random(x,40,60)
+      Random(y,40,60)
+      si (id=1)
+        EnviarMensaje(V,r1)
+        EnviarMensaje(x,r1)
+        EnviarMensaje(y,r1)
+      sino
+        si (id=2)
+          EnviarMensaje(V,r2)
+          EnviarMensaje(x,r2)
+          EnviarMensaje(y,r2)
+        sino
+          EnviarMensaje(V,r3)
+          EnviarMensaje(x,r3)
+          EnviarMensaje(y,r3)
+    finalizar
+    repetir 3
+      RecibirMensaje(f,*)
+      fTotal:=fTotal+f
+    Informar('flores totales',fTotal)
+  fin
+variables
+  r1,r2,r3:florero
+  rF:fiscalizador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r1,cuadrante)
+  AsignarArea(r2,cuadrante)
+  AsignarArea(r3,cuadrante)
+  AsignarArea(r1,diez)
+  AsignarArea(r2,diez)
+  AsignarArea(r3,diez)
+  AsignarArea(rF,areaF)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+  Iniciar(rF,4,1)
+fin

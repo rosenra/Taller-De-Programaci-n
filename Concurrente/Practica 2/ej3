@@ -1,0 +1,38 @@
+programa ej3_p2
+procesos
+  proceso juntarFlores(ES flores)
+  comenzar 
+     mientras(HayFlorEnLaEsquina)
+      tomarFlor
+       flores:=flores+1
+  fin
+  proceso juntarPapeles(ES papeles)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso recorrerF(ES flores:numero)
+  comenzar
+    repetir 9
+      si(HayFlorEnLaEsquina)
+        juntarFlores(flores)
+      mover
+    si(HayFlorEnLaEsquina)
+      juntarFlores(flores)
+  fin
+  proceso recorrerP(ES papeles:numero)
+  comenzar
+    repetir 9
+      si(HayPapelEnLaEsquina)
+        juntarPapeles(papeles)
+    si(HayPapelEnLaEsquina)
+      juntarPapeles(papeles)
+  fin
+areas
+  area1: AreaP(1,1,10,1)
+  area2: AreaP(11,1,20,1)
+  area3: AreaP(1,5,10,5)
+  area4: AreaP(11,5,20,5)
+robots
+  robot RA

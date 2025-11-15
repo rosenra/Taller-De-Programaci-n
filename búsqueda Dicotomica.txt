@@ -1,0 +1,20 @@
+búsqueda Dicotomica
+procedure busquedaDicotomica (v:vector; ini,fin:integer; dato:integer; var pos:integer);
+var
+  medio:integer;
+  ok:boolean;
+begin
+  ok:=false;
+  ini:=1;
+  fin:=dimF;
+  medio:=(ini+fin) div 2;
+  while ((ini<=fin) and (v[medio] <> dato)) do begin
+    if (dato<v[medio]) then
+      fin:= medio-1
+    else  
+      ini:=medio+1
+    medio:= (ini+fin) div 2;
+  end;
+  if ((ini>=fin) and (v[medio]=dato) then 
+    ok:= true;   
+end;

@@ -1,0 +1,147 @@
+programa parcial1
+procesos
+  proceso juntarF (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso juntarP (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles +1
+  fin
+  proceso recorrerCa (ES flores:numero)
+  variables
+    ca,av:numero
+  comenzar
+    ca:=PosCa
+    repetir 4
+      juntarF(flores)
+      mover
+    juntarF(flores)
+    av:=PosAv+1
+    BloquearEsquina(av,ca)
+    mover
+    juntarF(flores)
+    mover
+    LiberarEsquina(av,ca)
+    repetir 3
+      juntarF(flores)
+      mover
+    juntarF(flores)
+  fin
+  proceso recorrerAv(ES papeles:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    repetir 7
+      juntarP(papeles)
+      mover
+    juntarP(papeles)
+    ca:=PosCa+1
+    BloquearEsquina(av,ca)
+    mover
+    juntarP(papeles)
+    mover
+    LiberarEsquina(av,ca)
+    repetir 10
+      juntarP(papeles)
+      mover
+    juntarP(papeles)
+  fin
+areas
+  areaF1: AreaP(2,12,6,12)
+  areaF1b: AreaP(8,12,12,12)
+  areaF2: AreaP(16,12,20,12)
+  areaF2b: AreaP(22,12,26,12)
+  areaP1: AreaP(7,4,7,11)
+  areaP1b: AreaP(7,13,7,24)
+  areaP2: AreaP(21,4,21,11)
+  areaP2b: AreaP(21,13,21,24)
+  areaC1: AreaPC(7,12,7,12)
+  areaC2: AreaPC(21,12,21,12)
+  areaJ: AreaP(1,1,1,1)
+robots
+  robot florero
+  variables
+    flores:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,rF)
+    flores:=0
+    derecha
+    recorrerCa(flores)
+    EnviarMensaje(id,rF)
+    EnviarMensaje(flores,rF)
+  fin
+  robot papelero
+  variables
+    papeles:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,rF)
+    papeles:=0
+    recorrerAv(papeles)
+    EnviarMensaje(id,rF)
+    EnviarMensaje(papeles,rF)
+  fin
+  robot fiscalizador
+  variables
+    id:numero
+    suma1,suma2:numero
+    elementos:numero
+  comenzar
+    suma1:=0
+    suma2:=0
+    EnviarMensaje(1,rFV)
+    EnviarMensaje(2,rPV)
+    EnviarMensaje(3,rFA)
+    EnviarMensaje(4,rPA)
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(elementos,rFV)
+        suma1:=suma1+elementos
+      sino
+        si(id=2)
+          RecibirMensaje(elementos,rPV)
+          suma1:=suma1+elementos
+        sino
+          si(id=3)
+            RecibirMensaje(elementos,rFA)
+            suma2:=suma2+elementos
+          sino
+            RecibirMensaje(elementos,rPA)
+            suma2:=suma2+elementos
+    si (suma1> suma2)
+      Informar('verde gano con',suma1)
+    sino
+      Informar('azul gano con',suma2)
+  fin
+variables
+  rFV,rFA:florero
+  rPV,rPA:papelero
+  rF:fiscalizador
+comenzar
+  AsignarArea(rFA,areaF1)
+  AsignarArea(rFA,areaF1b)
+  AsignarArea(rFA,areaC1)
+  AsignarArea(rPA,areaP1)
+  AsignarArea(rPA,areaP1b)
+  AsignarArea(rPA,areaC1)
+  AsignarArea(rFV,areaF2)
+  AsignarArea(rFV,areaF2b)
+  AsignarArea(rFV,areaC2)
+  AsignarArea(rPV,areaP2)
+  AsignarArea(rPV,areaP2b)
+  AsignarArea(rPV,areaC2)
+  AsignarArea(rF,areaJ)
+  Iniciar(rFA,2,12)
+  Iniciar(rPA,7,4)
+  Iniciar(rFV,16,12)
+  Iniciar(rPV,21,4)
+  Iniciar(rF,1,1)
+fin

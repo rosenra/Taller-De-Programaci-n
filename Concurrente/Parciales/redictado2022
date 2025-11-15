@@ -1,0 +1,107 @@
+programa redictado2022
+procesos
+  proceso juntarF(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso depositarF(ES flores:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    repetir flores
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(10,10)
+  fin
+areas
+  area1: AreaP(1,1,6,6)
+  area2: AreaP(7,1,12,6)
+  area3: AreaP(13,1,18,6)
+  areaC: AreaP(20,1,20,1)
+  diez: AreaPC(10,10,10,10)
+robots
+  robot trabajador
+  variables
+    flores:numero
+    id: numero
+    ok:boolean
+    perdio:boolean
+  comenzar
+    flores:=0
+    repetir 4
+      repetir 5
+        juntarF(flores)
+        mover
+      derecha
+      EnviarMensaje(V,rC)
+      RecibirMensaje(ok,rC)
+    EnviarMensaje(id,rC)
+    EnviarMensaje(flores,rC)
+    RecibirMensaje(perdio,rC)
+    si(perdio=V)
+      depositarF(flores)
+  fin
+  robot coordinador
+  variables
+    ok:boolean
+    id,idMax,f,fMax:numero
+  comenzar
+    fMax:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    repetir 4
+      repetir 3
+        RecibirMensaje(ok,*)
+      EnviarMensaje(V,r1)
+      EnviarMensaje(V,r2)
+      EnviarMensaje(V,r3) {c/u  o  repetir 3 >>EnviarMensaje(V,*)}
+    repetir 3
+      RecibirMensaje(id,*)
+      si (id=1)
+        RecibirMensaje(f,r1)
+      sino
+        si (id=2)
+          RecibirMensaje(f,r2)
+        sino
+          RecibirMensaje(f,r3)
+      si (f > fMax)
+        idMax:=id
+        fMax:=f
+    si (idMax=1)
+      EnviarMensaje(F,r1)
+      EnviarMensaje(V,r2)
+      EnviarMensaje(V,r3)
+    sino
+      si(idMax=2)
+        EnviarMensaje(F,r2)
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r3)
+      sino
+        EnviarMensaje(F,r3)
+        EnviarMensjae(V,r1)
+        EnviarMensaje(V,r2)
+    Informar('ganador',idMax)
+  fin
+variables
+  r1,r2,r3:trabajador
+  rC:coordinador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r1,diez)
+  AsignarArea(r2,diez)
+  AsignarArea(r3,diez)
+  AsignarArea(rC,areaC)
+  Iniciar(r1,1,1)
+  Iniciar(r2,7,1)
+  Iniciar(r3,13,1)
+  Iniciar(rC,20,1)
+fin

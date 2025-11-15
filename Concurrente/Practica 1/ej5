@@ -1,0 +1,125 @@
+programa ej5p1
+procesos
+  proceso limpiarFlor (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso depositarFlores (E flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+  proceso limpiarPapeles (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso depositarPapeles (E papeles:numero)
+  comenzar
+    repetir papeles
+      depositarPapel
+  fin
+  proceso recorridoFlor (E flores:numero;E cant:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    repetir cant-1
+      limpiarFlor (flores)
+      mover
+    limpiarFlor (flores)
+    depositarFlores (flores)
+  fin
+  proceso iniciarRecorridoF (E cant:numero)
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    recorridoFlor (flores,cant)
+  fin
+  proceso recorridoPapeles (E papeles:numero;E cant:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    repetir cant-1
+      limpiarPapeles (papeles)
+      mover
+    limpiarPapeles (papeles)
+    depositarPapeles (papeles)
+  fin
+  proceso iniciarRecorridoP (E cant:numero)
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    recorridoPapeles (papeles,cant)
+  fin
+areas
+  area1: AreaP (1,75,15,75)
+  area1_2: AreaP(1,80,15,80)
+  area2: AreaP(75,80,75,100)
+  area2_2: AreaP(80,80,80,100)
+  area3: AreaP (70,10,100,10)
+  area3_2: AreaP(70,15,100,15)
+  area4: AreaP (10,1,10,10)
+  area4_2: AreaP(15,1,15,10)
+robots
+  robot robot1 
+  variables
+    flores:numero
+  comenzar
+    derecha
+    iniciarRecorridoF (15)
+    Pos(1,80)
+    iniciarRecorridoF (15)
+  fin
+  robot robot2
+  variables
+    papeles:numero
+  comenzar
+    iniciarRecorridoP (20)
+    Pos(80,80)
+    iniciarRecorridoP (20)
+  fin
+  robot robot3
+  variables
+    flores:numero
+  comenzar
+    derecha
+    iniciarRecorridoF (30)
+    Pos(70,15)
+    iniciarRecorridoF (30)
+  fin
+  robot robot4
+  variables
+    papeles:numero
+  comenzar
+    iniciarRecorridoP (10)
+    Pos (15,1)
+    iniciarRecorridoP (10)
+  fin
+variables
+  r1:robot1
+  r2:robot2
+  r3:robot3
+  r4:robot4
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r1,area1_2)
+  AsignarArea(r2,area2)
+  AsignarArea(r2,area2_2)
+  AsignarArea(r3,area3)
+  AsignarArea(r3,area3_2)
+  AsignarArea(r4,area4)
+  AsignarArea(r4,area4_2)
+  Iniciar(r1,1,80)
+  Iniciar (r2,75,80)
+  Iniciar (r3,70,10)
+  Iniciar (r4,10,1)
+fin
