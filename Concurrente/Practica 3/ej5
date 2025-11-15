@@ -1,0 +1,93 @@
+programa ej5p3
+procesos
+  proceso IDs
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso papeles(ES av:numero;ES ca:numero;ES ok:boolean)
+  comenzar
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    si (HayPapelEnLaEsquina)
+      tomarPapel
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+      depositarPapel
+      mover
+    sino
+      ok:=F
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+  fin
+areas
+  area1: AreaP(4,1,4,100)
+  area2: AreaP(6,1,6,100)
+  area3: AreaP(8,1,8,100)
+  area4: AreaP(10,1,10,100)
+  areaJ: AreaP(1,1,1,1)
+  once: AreaC(11,11,11,11)
+robots
+  robot tipo1
+  variables
+    av,ca:numero
+    id:numero
+    ok:boolean
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    ok:=V
+    RecibirMensaje(id,rJ)
+    mientras (ok) & (PosCa<100)
+      papeles(av,ca,ok)
+    EnviarMensaje(id,rJ)
+    ca:=PosCa
+    EnviarMensaje(ca,rJ)
+  fin
+  robot jefe
+  variables
+    id,idMax,ca,caMax:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    caMax:=-1
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(ca,r1)
+      sino
+        si(id=2)
+          RecibirMensaje(ca,r2)
+        sino
+          si(id=3)
+            RecibirMensaje(ca,r3)
+          sino
+            RecibirMensaje(ca,r4)
+      si(ca>caMax)
+        caMax:= ca
+        idMax:= id
+    Informar(idMax)
+  fin
+variables
+  r1,r2,r3,r4:tipo1
+  rJ:jefe
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r4,area4)
+  AsignarArea(rJ,areaJ)
+  AsignarArea(r1,once)
+  AsignarArea(r2,once)
+  AsignarArea(r3,once)
+  AsignarArea(r4,once)
+  Iniciar(r1,4,1)
+  Iniciar(r2,6,1)
+  Iniciar(r3,8,1)
+  Iniciar(r4,10,1)
+  Iniciar(rJ,1,1)
+fin    

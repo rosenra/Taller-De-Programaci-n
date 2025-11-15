@@ -1,0 +1,62 @@
+{a veces alguno queda trabado}
+programa ej3bp4
+areas
+  area1: AreaP(1,1,1,100)
+  area2: AreaP(2,1,2,100)
+  area3: AreaP(3,1,3,100)
+  areaJ: AreaP(4,4,4,4)
+robots
+  robot coordinador
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  robot tipo1
+  variables
+    id:numero
+    ok:boolean
+    cant:numero
+    papeles:numero
+  comenzar
+    papeles:=0
+    RecibirMensaje(id,rC)
+    mientras (PosCa <100)
+      Random(cant,1,5)
+      mientras (cant <> papeles) &(PosCa<100)  
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+          papeles:=papeles+1
+          si(cant=papeles)
+            papeles:=0
+            si(id=1)
+              EnviarMensaje(V,r2)
+              EnviarMensaje(V,r3)
+              RecibirMensaje(ok,r2)
+              RecibirMensaje(ok,r3)
+            sino
+              si(id=2)
+                EnviarMensaje(V,r1)
+                EnviarMensaje(V,r3)
+                RecibirMensaje(ok,r1)
+                RecibirMensaje(ok,r3)
+              sino 
+                EnviarMensaje(V,r1)
+                EnviarMensaje(V,r2)
+                RecibirMensaje(ok,r1)
+                RecibirMensaje(ok,r2) 
+        mover
+  fin 
+variables
+  r1,r2,r3:tipo1
+  rC:coordinador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(rC,areaJ)
+  Iniciar(r1,1,1) 
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+  Iniciar(rC,4,4)
+fin 

@@ -1,0 +1,91 @@
+{tres robots deben realizar 5 cuadrados c/u, como se ejemplifica en la figura juntando todas las flores que encuentran a su paso. El tamaño de cada cuadrado será determinado aleatoriamente entre 1 y 5 por cada robot. Al finalizar cada cuadrado, deberán esperar que los otros  robots también finalicen para avanzar hacia el siguiente cuadrado, siguiendo el modelo de sincronización de barrera sin coordinador. Una vez completados los 5 cuadrados, deberán depositar DE A UNA todas las flores encontradas en la esquina (50,50). Los robots inician en las esquinas (1,1), (8,1) y (15,1) Existe un robot coordinador cuya UNICA TAREA es asignar los identificadores a cada robot.}
+programa turnoC
+procesos
+  proceso juntarF(ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso cuadrado(E cant:numero; ES flores:numero)
+  comenzar
+    repetir 4
+      repetir cant
+        juntarF(flores)
+        mover
+      juntarF(flores)
+      derecha
+  fin
+  proceso depositarF(ES flores:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    repetir flores
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(50,50)
+  fin
+areas
+  area1: AreaP(1,1,6,28)
+  area2: AreaP(8,1,13,28)
+  area3: AreaP(15,1,20,28)
+  areaC: AreaP(51,1,51,1)
+  cincuenta: AreaPC(50,50,50,50)
+robots
+  robot tipo1
+  variables
+    id:numero
+    flores:numero
+    cant:numero
+    ok1,ok2:numero
+  comenzar
+    flores:=0
+    RecibirMensaje(id,rC)
+    repetir 5
+      Random(cant,1,5)
+      cuadrado(cant,flores)
+      si(id=1)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(ok1,r2)
+        RecibirMensaje(ok2,r3)
+      sino
+        si (id=2)
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r3)
+          RecibirMensaje(ok1,r1)
+          RecibirMensaje(ok2,r3)
+        sino
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r2)
+          RecibirMensaje(ok1,r1)
+          RecibirMensaje(ok2,r2)
+      Pos(PosAv,PosCa+cant+1)
+    depositarF(flores)
+  fin
+  robot coordinador
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+variables
+  r1,r2,r3:tipo1
+  rC:coordinador
+comenzar 
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(rC,areaC)
+  AsignarArea(r1,cincuenta)
+  AsignarArea(r2,cincuenta)
+  AsignarArea(r3,cincuenta)
+  Iniciar(r1,1,1)
+  Iniciar(r2,8,1)
+  Iniciar(r3,15,1)
+  Iniciar(rC,51,1)
+fin

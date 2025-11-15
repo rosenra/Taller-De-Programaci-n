@@ -1,0 +1,108 @@
+{no vacia cada 10 flores juntadas}
+programa ej3p5
+procesos
+  proceso juntarF (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso depositarF (E flores:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(10,10)
+    { EnviarMensaje(V,rC)}
+  fin
+  proceso recorrerCa
+  variables
+    flores:numero
+    cant:numero
+  comenzar
+    flores:=0
+    cant:=0
+    repetir 99
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+        si(flores=10)
+          depositarF(flores)
+          EnviarMensaje(V,rC)
+      cant:=cant+1
+      si (cant=15)
+        depositarF(flores)
+        EnviarMensaje(V,rC)
+        cant:=0
+      mover
+    cant:=cant+1
+    si(cant=15)
+      depositarF(flores)
+      EnviarMensaje(V,rC)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+      si(flores=10)
+        depositarF(flores)
+        EnviarMensaje(V,rC)
+  fin
+areas
+  area1: AreaP(1,3,100,3)
+  area2: AreaP(1,4,100,4)
+  areaC: AreaP(1,5,1,5)
+  diez: AreaP(10,10,10,10)
+robots
+  robot recolector
+  comenzar
+    EnviarMensaje(V,rC)
+    derecha
+    recorrerCa
+    EnviarMensaje(F,rC)
+  fin
+  robot cosechador
+  variables
+    ok1,ok2:boolean
+    f:numero
+    listo:boolean
+    ca,av:numero
+  comenzar
+    f:=0
+    RecibirMensaje(ok1,r1)
+    RecibirMensaje(ok2,r2)
+    mientras (ok1)|(ok2)
+      RecibirMensaje(listo,*)
+      si(listo = V)
+        ca:=PosCa
+        av:=PosAv
+        BloquearEsquina(10,10)
+        Pos(10,10)
+        juntarF(f)
+        Pos(av,ca)
+        LiberarEsquina(10,10)
+      sino
+        si(ok1)
+          ok1:=F
+        sino
+          ok2:=F
+    Informar('flores juntadas',f)
+  fin
+variables
+  r1,r2:recolector
+  rC:cosechador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(rC,areaC)
+  AsignarArea(r1,diez)
+  AsignarArea(r2,diez)
+  AsignarArea(rC,diez)
+  Iniciar(r1,1,3)
+  Iniciar(r2,1,4)
+  Iniciar(rC,1,5)
+fin

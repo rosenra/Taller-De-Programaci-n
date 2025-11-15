@@ -1,0 +1,114 @@
+programa ej1p3
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso juntarPapeles (ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso juntarElementos (ES cantE:numero; E intentos:numero;E ok:boolean)
+  variables
+    x,y:numero
+    inicioX, inicioY:numero
+  comenzar
+    inicioX:= PosAv
+    inicioY:= PosCa
+    cantE:=0
+    repetir intentos
+      si (ok = F)
+        Random (x,1,5)
+        Random (y,1,10)
+        BloquearEsquina (x,y){se bloquea antes de posicionarse}
+        Pos(x,y)
+        juntarFlores(cantE)
+        Pos(inicioX,inicioY)
+        LiberarEsquina(x,y)
+      sino
+        Random (x,6,10)
+        Random(y,1,10)
+        BloquearEsquina(x,y)
+        Pos(x,y)
+        juntarPapeles(cantE)
+        Pos(inicioX,inicioY)
+        LiberarEsquina(x,y)
+  fin 
+areas
+  areaF: AreaPC (1,1,5,10)
+  areaP: AreaPC (6,1,10,9)
+  area1: AreaP (6,10,6,10)
+  area2: AreaP (7,10,7,10)
+  area3: AreaP (8,10,8,10)
+  area4: AreaP (9,10,9,10)
+  areaFin: AreaC (10,10,10,10)
+robots
+  robot floreros
+  variables
+    flores:numero
+    intentosF:numero
+    inicioX:numero
+    inicioY:numero
+    ok:boolean
+  comenzar
+    intentosF:=5
+    ok:= F
+    flores:=0
+    inicioX:= PosAv
+    inicioY:= PosCa
+    juntarElementos(flores,intentosF,ok)
+    repetir flores
+      BloquearEsquina (10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(inicioX,inicioY)
+      LiberarEsquina(10,10)
+  fin
+  robot papelero
+  variables
+    papeles:numero
+    intentosP:numero
+    inicioX:numero
+    inicioY:numero
+    ok:boolean
+  comenzar
+    intentosP:=3
+    ok:= V
+    papeles:=0
+    inicioX:= PosAv
+    inicioY:= PosCa
+    juntarElementos (papeles,intentosP,ok)
+    repetir papeles
+      BloquearEsquina (10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(inicioX,inicioY)
+      LiberarEsquina(10,10)
+  fin
+variables
+  r1:floreros
+  r2:floreros
+  r3:papelero
+  r4:papelero
+comenzar
+  AsignarArea(r1,areaF)
+  AsignarArea(r1,area1)
+  AsignarArea(r2,areaF)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,areaP)
+  AsignarArea(r3,area3)
+  AsignarArea(r4,areaP)
+  AsignarArea(r4,area4)
+  AsignarArea(r1,areaFin)
+  AsignarArea(r2,areaFin)
+  AsignarArea(r3,areaFin)
+  AsignarArea(r4,areaFin)
+  Iniciar (r1,6,10)
+  Iniciar(r2,7,10)
+  Iniciar(r3,8,10)
+  Iniciar(r4,9,10)
+fin

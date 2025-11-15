@@ -1,0 +1,88 @@
+program arboles;
+type
+ arbol=^nodo;
+nodo= record
+  dato:tipoDElem;
+  HI:arbol;// hijo izquierdo
+  HD:arbol;//hijo derecho
+//cada nodo a lo sumo puede tener dos hijos
+// siempre se agrega como hoja
+// en general tomamos los de la derecha como mas grandes
+end;
+{P.P}
+var
+a:arbol;
+begin
+a:=nil
+end.
+
+procedure Agregar (var a:arbol; num:integer); // recursivamente es mas fácil este modulo
+begin
+if (a=nil) then
+begin
+ new(a);// tmb puedo usar una var aux
+ a^.dato := num;
+ a^.HI:=nil;
+ a^.HD:=nil;
+end;
+else
+ if (num <= A^.dato) then
+    agregar (a^.HI,num) //comparo el valor con el HI
+ else 
+   agregar (a^.HD,num)
+end;
+
+procedure enOrden (a:arbol); //imprime el árbol de < a >
+begin
+  if (a<> nil) then 
+   begin
+     enOrden (a^.HI);
+     writeln (a^.dato);
+     enOrden (a^.HD);
+    end;
+  end;
+
+procedure preOrden (a:arbol);
+begin
+  if (a <> nil )then
+    begin
+     write (a^.HI);
+     preOrden (a^.HI);
+     preOrden (a^.HD);
+    end;
+end;
+
+procedure postOrden (a:arbol);
+begin
+  if (a <> nil )then
+   begin
+    postOrden (a^.HI);
+    postOrden (a^.HD);
+    writeln (a^.dato);
+   end;
+end;
+
+
+procedure Buscar (a:arbol; x:integer; var ok:boolean);
+begin
+  if (a <> nil) then 
+   begin
+    buscar (a^.HI,x,ok);
+    if (a^.dato =x) then 
+      ok:= true;
+    buscar (a^.HD,x,ok);
+   end;
+end; //no es eficiente por que recorre todo el árbol
+
+function buscar (a:arbol; x: integer):boolean;
+begin
+ if (a=nil) then
+   buscar:=false
+ else  (a^.dato = x) then
+   buscar:= true
+ else if (x > a^.dato) then
+   buscar:= buscar(a^.HD, x)
+  else buscar:= buscar (a^.HI,x);
+end;
+
+    
